@@ -80,6 +80,29 @@ namespace GLTFast.Editor {
         
         public override void OnImportAsset(AssetImportContext ctx) {
 
+            Shader masterShader = Shader.Find("Shader Graphs/GLTFMasterShader");
+
+            if (masterShader == null) {
+                #if UNITY_EDITOR
+                    var masterShaderPrefix = "Packages/com.atteneder.gltfast/Runtime/Shader/";
+                    var masterShaderName = "GLTFMasterShader";
+
+                    var shaderPath = $"{masterShaderPrefix}{masterShaderName}.shadergraph";
+                    masterShader = AssetDatabase.LoadAssetAtPath<Shader>(shaderPath);
+                    if (masterShader == null) {
+                        Debug.LogError($"Cannot load Master Shader at path {shaderPath}");
+                    }
+                #else
+                    var masterShaderGraphPrefix = "Shader Graphs/";
+                    var masterShaderName = "GLTFMasterShader";
+
+                    masterShader = FindShader($"{SHADER_GRAPHS}{shaderName}");
+                    if (masterShader == null) {
+                        Debug.LogError(LogCode.ShaderMissing,shaderName);
+                    }
+                #endif
+            }
+
             reportItems = null;
 
             var downloadProvider = new EditorDownloadProvider();
@@ -124,6 +147,8 @@ namespace GLTFast.Editor {
                     var sceneTransform = go.transform.GetChild(sceneIndex);
                     var sceneGo = sceneTransform.gameObject;
                     AddObjectToAsset(ctx,$"scenes/{sceneGo.name}", sceneGo);
+                    Debug.Log("We are importing here: "+sceneGo.name);
+
                     if (sceneIndex == m_Gltf.defaultSceneIndex) {
                         ctx.SetMainObject(sceneGo);
                     }
@@ -148,9 +173,17 @@ namespace GLTFast.Editor {
                     mat.doubleSidedGI = true;
                     
                     if (mat != null) {
-                        // mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
+                        if (masterShader == null) {
+                            Debug.LogError("GLTFMasterShader is missing!!");
+                        } else {
+                            mat.shader = masterShader;
+                        }      
                         AddObjectToAsset(ctx, $"materials/{mat.name}", mat);
-                        // mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
+                        if (masterShader == null) {
+                            Debug.LogError("GLTFMasterShader is missing!!");
+                        } else {
+                            mat.shader = masterShader;
+                        }    
                     }
                 }
 
@@ -158,9 +191,19 @@ namespace GLTFast.Editor {
                     // If a default/fallback material was created, import it as well'
                     // to avoid (pink) objects without materials
                     var mat = m_Gltf.defaultMaterial;
-                    // mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
+                    if (masterShader == null) {
+                        Debug.LogError("GLTFMasterShader is missing!!");
+                    } else {
+                        mat.shader = masterShader;
+                    }                 
+
                     AddObjectToAsset(ctx, $"materials/{mat.name}", mat);
-                    // mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
+
+                    if (masterShader == null) {
+                        Debug.LogError("GLTFMasterShader is missing!!");
+                    } else {
+                        mat.shader = masterShader;
+                    }      
                 }
                 
                 var meshes = m_Gltf.GetMeshes();
