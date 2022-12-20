@@ -148,9 +148,9 @@ namespace GLTFast.Editor {
                     mat.doubleSidedGI = true;
                     
                     if (mat != null) {
-                        mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
+                        // mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
                         AddObjectToAsset(ctx, $"materials/{mat.name}", mat);
-                        mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
+                        // mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
                     }
                 }
 
@@ -158,9 +158,9 @@ namespace GLTFast.Editor {
                     // If a default/fallback material was created, import it as well'
                     // to avoid (pink) objects without materials
                     var mat = m_Gltf.defaultMaterial;
-                    mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
+                    // mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
                     AddObjectToAsset(ctx, $"materials/{mat.name}", mat);
-                    mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
+                    // mat.shader = Shader.Find("Shader Graphs/GLTFMasterShader");
                 }
                 
                 var meshes = m_Gltf.GetMeshes();
