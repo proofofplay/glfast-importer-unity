@@ -1061,21 +1061,16 @@ namespace GLTFast {
         }
 
         static Tuple<byte[],string> DecodeEmbedBuffer(string encodedBytes,ICodeLogger logger) {
-            Profiler.BeginSample("DecodeEmbedBuffer");
-            logger?.Warning(LogCode.EmbedSlow);
             var mediaTypeEnd = encodedBytes.IndexOf(';',5,Math.Min(encodedBytes.Length-5,1000) );
             if(mediaTypeEnd<0) {
-                Profiler.EndSample();
                 return null;
             }
             var mimeType = encodedBytes.Substring(5,mediaTypeEnd-5);
             var tmp = encodedBytes.Substring(mediaTypeEnd+1,7);
             if(tmp!="base64,") {
-                Profiler.EndSample();
                 return null;
             }
             var data = System.Convert.FromBase64String(encodedBytes.Substring(mediaTypeEnd+8));
-            Profiler.EndSample();
             return new Tuple<byte[], string>(data, mimeType);
         }
 
