@@ -147,7 +147,6 @@ namespace GLTFast.Editor {
                     var sceneTransform = go.transform.GetChild(sceneIndex);
                     var sceneGo = sceneTransform.gameObject;
                     AddObjectToAsset(ctx,$"scenes/{sceneGo.name}", sceneGo);
-                    Debug.Log("We are importing here: "+sceneGo.name);
 
                     if (sceneIndex == m_Gltf.defaultSceneIndex) {
                         ctx.SetMainObject(sceneGo);
@@ -286,7 +285,7 @@ namespace GLTFast.Editor {
             }
 
             if (reportItemList.Any(x => x.type == LogType.Error || x.type == LogType.Exception)) {
-                Debug.LogError($"Failed to import {assetPath} (see inspector for details)", this);
+                // Debug.LogError($"Failed to import {assetPath} (see inspector for details)", this);
             }
             reportItems = reportItemList.ToArray();
         }
