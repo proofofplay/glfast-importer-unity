@@ -41,3 +41,8 @@ License Agreement. You will have to confirm that your Contributions are your
 original creation and that you have complete right and authority to make your
 Contributions. We allow both individual contributions and contributions made on
 behalf of companies. 
+
+## Resources
+
+- [Using Pull Requests](https://help.github.com/articles/about-pull-requests/)
+- [GitHub Help](https://help.github.com)
