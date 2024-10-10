@@ -616,35 +616,64 @@ namespace GLTFast {
         
 #endregion Public
 
+        private bool isLocked = false;
+
+        private async Task waitLock()
+        {
+            while (isLocked)  // Wait until the flag is false
+            {
+                await Task.Yield();  // Yield to prevent blocking the main thread
+                Debug.Log("Waiting for GLTF lock");
+            }
+            isLocked = true;  // Lock the method
+        }
+
+        // Method to "unlock" the execution
+        private void unlock()
+        {
+            isLocked = false;  // Unlock the method
+        }
+
         async Task<bool> LoadRoutine( Uri url ) {
+
+            // Serialize the downloader to keep memory use down
+            await waitLock();
 
             var download = await downloadProvider.Request(url);
             var success = download.success;
-            
-            if(success) {
 
-                bool? gltfBinary = download.isBinary;
-                if (!gltfBinary.HasValue)
-                {
-                    gltfBinary = UriHelper.IsGltfBinary(url);
-                }
+            try {
 
-                if (gltfBinary ?? false) {
-                    success = await LoadGltfBinaryBuffer(download.data,url);
-                } else {
-                    success = await LoadGltf(download.text,url);
-                }
                 if(success) {
-                    success = await LoadContent();
+
+                    bool? gltfBinary = download.isBinary;
+                    if (!gltfBinary.HasValue)
+                    {
+                        gltfBinary = UriHelper.IsGltfBinary(url);
+                    }
+
+                    if (gltfBinary ?? false) {
+                        success = await LoadGltfBinaryBuffer(download.data,url);
+                    } else {
+                        success = await LoadGltf(download.text,url);
+                    }
+                    if(success) {
+                        success = await LoadContent();
+                    }
+                    success = success && await Prepare();
+                } else {
+                    logger?.Error(LogCode.Download,download.error,url.ToString());
                 }
-                success = success && await Prepare();
-            } else {
-                logger?.Error(LogCode.Download,download.error,url.ToString());
+
+                DisposeVolatileData();
+                loadingError = !success;
+                loadingDone = true;
+
+            }
+            finally {
+                unlock();
             }
 
-            DisposeVolatileData();
-            loadingError = !success;
-            loadingDone = true;
             return success;
         }
 
