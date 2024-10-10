@@ -82,7 +82,7 @@ namespace GLTFast
 
             try {
                 logger = logger ?? new ConsoleLogger();
-                var success = await base.Load(url, downloadProvider, deferAgent, materialGenerator, logger);
+                success = await base.Load(url, downloadProvider, deferAgent, materialGenerator, logger);
                 if(success) {
                     if (deferAgent != null) await deferAgent.BreakPoint();
                     // Auto-Instantiate
