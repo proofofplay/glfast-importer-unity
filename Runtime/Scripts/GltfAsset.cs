@@ -50,6 +50,24 @@ namespace GLTFast
             }
         }
 
+        private bool isLocked = false;
+
+        private async Task waitLock()
+        {
+            while (isLocked)  // Wait until the flag is false
+            {
+                await Task.Yield();  // Yield to prevent blocking the main thread
+                Debug.Log("Waiting for GLTF lock");
+            }
+            isLocked = true;  // Lock the method
+        }
+
+        // Method to "unlock" the execution
+        private void unlock()
+        {
+            isLocked = false;  // Unlock the method
+        }        
+
         public override async Task<bool> Load(
             string url,
             IDownloadProvider downloadProvider=null,
@@ -58,17 +76,27 @@ namespace GLTFast
             ICodeLogger logger = null
             )
         {
-            logger = logger ?? new ConsoleLogger();
-            var success = await base.Load(url, downloadProvider, deferAgent, materialGenerator, logger);
-            if(success) {
-                if (deferAgent != null) await deferAgent.BreakPoint();
-                // Auto-Instantiate
-                if (sceneId>=0) {
-                    InstantiateScene(sceneId,logger);
-                } else {
-                    Instantiate(logger);
+            await waitLock();
+
+            bool success = false;
+
+            try {
+                logger = logger ?? new ConsoleLogger();
+                var success = await base.Load(url, downloadProvider, deferAgent, materialGenerator, logger);
+                if(success) {
+                    if (deferAgent != null) await deferAgent.BreakPoint();
+                    // Auto-Instantiate
+                    if (sceneId>=0) {
+                        InstantiateScene(sceneId,logger);
+                    } else {
+                        Instantiate(logger);
+                    }
                 }
             }
+            finally {
+                unlock();
+            }
+
             return success;
         }
         
