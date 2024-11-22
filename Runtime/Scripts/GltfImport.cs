@@ -475,6 +475,8 @@ namespace GLTFast {
                 }
                 resources = null;
             }
+            
+            
         }
 
         /// <summary>
@@ -642,7 +644,7 @@ namespace GLTFast {
                 logger?.Error(LogCode.Download,download.error,url.ToString());
             }
 
-            DisposeVolatileData();
+            
             loadingError = !success;
             loadingDone = true;
             return success;
@@ -712,7 +714,8 @@ namespace GLTFast {
             for( int i=0; i<bufferCount;i++) {
                 var buffer = gltfRoot.buffers[i];
                 if( !string.IsNullOrEmpty(buffer.uri) ) {
-                    if(buffer.uri.StartsWith("data:")) {
+                    if(buffer.uri.StartsWith("data:"))
+                    {
                         var decodedBuffer = await DecodeEmbedBufferAsync(
                             buffer.uri,
                             true // usually there's just one buffer and it's time-critical
@@ -1672,8 +1675,7 @@ namespace GLTFast {
         /// <summary>
         /// Free up volatile loading resources
         /// </summary>
-        void DisposeVolatileData() {
-
+       public void DisposeVolatileData() {
             if (vertexAttributes != null) {
                 foreach (var vac in vertexAttributes.Values) {
                     vac.Dispose();
@@ -1689,6 +1691,10 @@ namespace GLTFast {
                     t?.Free();
                 }
             }
+            
+            gltfRoot.Dispose();
+            gltfRoot = null;
+            
             bufferHandles = null;
 
 #if ENABLE_UNITY_COLLECTIONS_CHECKS

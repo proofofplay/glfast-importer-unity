@@ -114,7 +114,32 @@ namespace GLTFast.Schema {
 #if UNITY_ANIMATION
         public bool hasAnimation => animations != null && animations.Length > 0;
 #endif // UNITY_ANIMATION
-        
+
+        public void Dispose()
+        {
+            for (var i = 0; i < buffers.Length; i++)
+            {
+                buffers[i].uri = null;
+                buffers[i] = null;
+            }
+            
+            extensionsUsed = null;
+            extensionsRequired = null;
+            accessors = null;
+            asset = null;
+            buffers = null;
+            bufferViews = null;
+            cameras = null;
+            images = null;
+            materials = null;
+            meshes = null;
+            nodes = null;
+            samplers = null;
+            scenes = null;
+            skins = null;
+            textures = null;
+        }
+
         public bool IsAccessorInterleaved( int accessorIndex ) {
 			var accessor = accessors[accessorIndex];
 			var bufferView = bufferViews[accessor.bufferView];

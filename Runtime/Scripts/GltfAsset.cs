@@ -69,6 +69,9 @@ namespace GLTFast
                     Instantiate(logger);
                 }
             }
+            
+            base.DisposeImportantData();
+            // Destroy(this);
             return success;
         }
         

@@ -145,6 +145,14 @@ namespace GLTFast
             }
         }
 
+        public void DisposeImportantData()
+        {
+            if (importer != null)
+            {
+                importer.DisposeVolatileData();
+            }
+        }
+
         protected virtual void OnDestroy()
         {
             Dispose();
