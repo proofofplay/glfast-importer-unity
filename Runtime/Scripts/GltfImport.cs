@@ -1692,7 +1692,10 @@ namespace GLTFast {
                 }
             }
             
-            gltfRoot.Dispose();
+            if (gltfRoot != null) {
+                gltfRoot.Dispose();
+            }
+
             gltfRoot = null;
             
             bufferHandles = null;
