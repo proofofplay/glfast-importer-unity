@@ -74,13 +74,13 @@ namespace GLTFast.Materials {
 
 #if UNITY_EDITOR
         const string SHADER_PATH_PREFIX = "Packages/com.atteneder.gltfast/Runtime/Shader/Built-In/";
-        const string SHADER_PATH_PBR_METALLIC_ROUGHNESS = "glTFPbrMetallicRoughness.shader";
-        const string SHADER_PATH_PBR_SPECULAR_GLOSSINESS = "glTFPbrSpecularGlossiness.shader";
-        const string SHADER_PATH_UNLIT = "glTFUnlit.shader";
+        const string SHADER_PATH_PBR_METALLIC_ROUGHNESS = "GLTFMasterShader.shader";
+        const string SHADER_PATH_PBR_SPECULAR_GLOSSINESS = "GLTFMasterShader.shader";
+        const string SHADER_PATH_UNLIT = "GLTFMasterShader.shader";
 #else
-        const string SHADER_PBR_METALLIC_ROUGHNESS = "glTF/PbrMetallicRoughness";
-        const string SHADER_PBR_SPECULAR_GLOSSINESS = "glTF/PbrSpecularGlossiness";
-        const string SHADER_UNLIT = "glTF/Unlit";
+        const string SHADER_PBR_METALLIC_ROUGHNESS = "glTF/GLTFMasterShader";
+        const string SHADER_PBR_SPECULAR_GLOSSINESS = "glTF/GLTFMasterShader";
+        const string SHADER_UNLIT = "glTF/GLTFMasterShader";
 #endif
 
         Shader pbrMetallicRoughnessShader;

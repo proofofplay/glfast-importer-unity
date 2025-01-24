@@ -83,9 +83,9 @@ namespace GLTFast.Materials {
 #else
         protected const string SHADER_GRAPHS = "Shader Graphs/";
 #endif
-        protected const string SHADER_METALLIC = "glTF-pbrMetallicRoughness";
-        protected const string SHADER_UNLIT = "glTF-unlit";
-        protected const string SHADER_SPECULAR = "glTF-pbrSpecularGlossiness";
+        protected const string SHADER_METALLIC = "GLTFMasterShader";
+        protected const string SHADER_UNLIT = "GLTFMasterShader";
+        protected const string SHADER_SPECULAR = "GLTFMasterShader";
 
         
         // Keywords
