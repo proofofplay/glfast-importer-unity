@@ -325,6 +325,31 @@ namespace GLTFast {
             settings = importSettings ?? new ImportSettings();
             return await LoadRoutine(url);
         }
+
+        /// <summary>
+        /// Load a glTF JSON from a string
+        /// </summary>
+        /// <param name="json">glTF JSON</param>
+        /// <param name="uri">Base URI for relative paths of external buffers or images</param>
+        /// <param name="importSettings">Import Settings (<see cref="ImportSettings"/> for details)</param>
+        /// <param name="cancellationToken">Token to submit cancellation requests. The default value is None.</param>
+        /// <returns>True if loading was successful, false otherwise</returns>
+        public async Task<bool> LoadGltfJson(
+            string json,
+            Uri uri = null,
+            ImportSettings importSettings = null,
+            CancellationToken cancellationToken = default
+            )
+        {
+            m_Settings = importSettings ?? new ImportSettings();
+            var success = await LoadGltf(json, uri);
+            if (success) await LoadContent();
+            success = success && await Prepare();
+            DisposeVolatileData();
+            LoadingError = !success;
+            LoadingDone = true;
+            return success;
+        }
         
         /// <summary>
         /// Load a glTF-binary asset from a byte array.
