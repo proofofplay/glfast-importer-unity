@@ -339,7 +339,7 @@ namespace GLTFast {
             ImportSettings importSettings = null
             )
         {
-            m_Settings = importSettings ?? new ImportSettings();
+            settings = importSettings ?? new ImportSettings();
             var success = await LoadGltf(json, uri);
             if (success) await LoadContent();
             success = success && await Prepare();
