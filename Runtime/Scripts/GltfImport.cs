@@ -332,13 +332,11 @@ namespace GLTFast {
         /// <param name="json">glTF JSON</param>
         /// <param name="uri">Base URI for relative paths of external buffers or images</param>
         /// <param name="importSettings">Import Settings (<see cref="ImportSettings"/> for details)</param>
-        /// <param name="cancellationToken">Token to submit cancellation requests. The default value is None.</param>
         /// <returns>True if loading was successful, false otherwise</returns>
         public async Task<bool> LoadGltfJson(
             string json,
             Uri uri = null,
-            ImportSettings importSettings = null,
-            CancellationToken cancellationToken = default
+            ImportSettings importSettings = null
             )
         {
             m_Settings = importSettings ?? new ImportSettings();
