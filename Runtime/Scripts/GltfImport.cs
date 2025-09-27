@@ -343,7 +343,6 @@ namespace GLTFast {
             var success = await LoadGltf(json, uri);
             if (success) await LoadContent();
             success = success && await Prepare();
-            DisposeVolatileData();
             LoadingError = !success;
             LoadingDone = true;
             return success;
